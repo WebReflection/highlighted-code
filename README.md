@@ -24,7 +24,7 @@ textarea[is="highlighted-code"] { padding: 8px; }
   HighlightedCode.useTheme('github-dark');
 })(self);
 </script>
-<textarea is="highlighted-code" cols="80" rows="12" language="javascript">
+<textarea is="highlighted-code" cols="80" rows="12" language="javascript" tab-size="2">
 (async ({chrome, netscape}) => {
 
   // add Safari polyfill if needed

@@ -21,7 +21,7 @@ let theme, resizeObserver;
  * @example `<textarea is="highlighted-code" language="css"></textarea>`
  */
 class HighlightedCode extends HTMLTextAreaElement {
-  static get observedAttributes() { return ['language']; }
+  static get observedAttributes() { return ['language', 'tab-size']; }
   static get library() { return hljs; }
 
   /**
@@ -52,16 +52,21 @@ class HighlightedCode extends HTMLTextAreaElement {
     pre.innerHTML = '<code></code>';
     targets.set(this, pre);
     this.style.cssText += `
+      tab-size: 2;
       white-space: pre;
       font-family: monospace;
       color: transparent;
       background-color: transparent;
     `;
     // setup internal class
-    const {language} = this;
+    const {language, tabSize} = this;
     if (language) {
       delete this.language;
       this.language = language;
+    }
+    if (tabSize) {
+      delete this.tabSize;
+      this.tabSize = tabSize;
     }
   }
 
@@ -76,11 +81,30 @@ class HighlightedCode extends HTMLTextAreaElement {
     this.setAttribute('language', name);
   }
 
-  attributeChangedCallback(language, _, name) {
-    let className = 'hljs';
-    if (name)
-      className += ' language-' + name;
-    targets.get(this).querySelector('code').className = className;
+  /**
+   * The tab-size value.
+   * @type {string}
+   */
+  get tabSize() {
+    return this.getAttribute('tab-size');
+  }
+  set tabSize(value) {
+    this.setAttribute('tab-size', value);
+  }
+
+  attributeChangedCallback(name, _, value) {
+    switch (name) {
+      case 'language':
+        let className = 'hljs';
+        if (value)
+          className += ' language-' + value;
+        targets.get(this).querySelector('code').className = className;
+        break;
+      case 'tab-size':
+        this.style.tabSize = value;
+        targets.get(this).style.tabSize = value;
+        break;
+    }
   }
   connectedCallback() {
     const pre = targets.get(this);
@@ -88,16 +112,27 @@ class HighlightedCode extends HTMLTextAreaElement {
     this.oninput();
     _backgroundColor.call(this);
     resizeObserver.observe(this, options);
-    this.addEventListener('input', this);
+    this.addEventListener('keydown', this);
     this.addEventListener('scroll', this);
+    this.addEventListener('input', this);
   }
   disconnectedCallback() {
     resizeObserver.unobserve(this);
-    this.removeEventListener('input', this);
+    this.removeEventListener('keydown', this);
     this.removeEventListener('scroll', this);
+    this.removeEventListener('input', this);
   }
 
   handleEvent(event) { this['on' + event.type](event); }
+  onkeydown(event) {
+    if (event.key === 'Tab') {
+      const {selectionStart, selectionEnd, value} = this;
+      this.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
+      this.selectionStart = this.selectionEnd = selectionStart + 1;
+      this.oninput();
+      event.preventDefault();
+    }
+  }
   oninput() {
     dropIdle(this.idle);
     this.idle = setIdle(
@@ -142,6 +177,7 @@ if (!customElements.get(TAG)) {
         pointer-events: none;
         overflow: auto;
         box-sizing: border-box;
+        tab-size: ${target.tabSize || 2};
         top: ${top}px;
         left: ${left}px;
         width: ${width}px;
