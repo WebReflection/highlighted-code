@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>highlighted-code</title>
+  <style>
+    textarea[is="highlighted-code"] {
+      padding: 8px;
+      border: 1px solid silver;
+      border-radius: 8px;
+    }
+  </style>
+  <script type="module">
+    (async ({chrome, netscape}) => {
+      if (!chrome && !netscape)
+        await import('https://unpkg.com/@ungap/custom-elements');
+
+      const {default: HighlightedCode} = await import(
+        /^(?:localhost|[::1]|127(?:.d+){3})$/.test(location.hostname) ?
+        '../min.js' :
+        'https://unpkg.com/highlighted-code?module'
+      );
+
+      // https://github.com/highlightjs/highlight.js/tree/main/src/styles
+      HighlightedCode.useTheme('github-dark');
+    })(self);
+  </script>
+</head>
+<body>
+<textarea is="highlighted-code" cols="60" rows="5" language="sql">
+CREATE TABLE "topic" (
+  "id" integer NOT NULL PRIMARY KEY,
+  "forum_id" integer NOT NULL,
+  "subject" varchar(255) NOT NULL
+);
+ALTER TABLE "topic"
+ADD CONSTRAINT forum_id FOREIGN KEY ("forum_id")
+REFERENCES "forum" ("id");
+
+-- Initials
+insert into "topic" ("forum_id", "subject")
+values (2, 'D''artagnian');
+</textarea>
+</body>
+</html>
