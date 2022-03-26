@@ -1,6 +1,8 @@
 'use strict';
 const hljs = (m => /* c8 ignore start */ m.__esModule ? m.default : m /* c8 ignore stop */)(require('highlight.js'));
 
+/*! (c) Andrea Giammarchi - ISC */
+
 const TAG = 'highlighted-code';
 
 const targets = new WeakMap;

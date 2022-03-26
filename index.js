@@ -57242,6 +57242,8 @@ var lib = hljs;
 
 var HighlightJS = lib;
 
+/*! (c) Andrea Giammarchi - ISC */
+
 const TAG = 'highlighted-code';
 
 const targets = new WeakMap;

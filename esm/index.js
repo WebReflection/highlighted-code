@@ -1,5 +1,7 @@
 import hljs from 'highlight.js';
 
+/*! (c) Andrea Giammarchi - ISC */
+
 const TAG = 'highlighted-code';
 
 const targets = new WeakMap;
