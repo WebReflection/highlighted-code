@@ -108,8 +108,7 @@ class HighlightedCode extends HTMLTextAreaElement {
     }
   }
   connectedCallback() {
-    const pre = targets.get(this);
-    this.parentElement.insertBefore(pre, this.nextSibling);
+    this.parentElement.insertBefore(targets.get(this), this.nextSibling);
     this.oninput();
     _backgroundColor.call(this);
     resizeObserver.observe(this, options);
@@ -118,6 +117,7 @@ class HighlightedCode extends HTMLTextAreaElement {
     this.addEventListener('input', this);
   }
   disconnectedCallback() {
+    targets.get(this).remove();
     resizeObserver.unobserve(this);
     this.removeEventListener('keydown', this);
     this.removeEventListener('scroll', this);
