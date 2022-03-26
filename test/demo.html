@@ -1,6 +1,10 @@
 <!doctype html>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <style>
-textarea[is="highlighted-code"] { padding: 8px; }
+textarea[is="highlighted-code"] {
+  width: 90%;
+  padding: 8px;
+}
 </style>
 <script type="module">
 (async ({chrome, netscape}) => {
@@ -16,7 +20,7 @@ textarea[is="highlighted-code"] { padding: 8px; }
   HighlightedCode.useTheme('github-dark');
 })(self);
 </script>
-<textarea is="highlighted-code" cols="80" rows="12" language="javascript">
+<textarea is="highlighted-code" rows="12" language="javascript">
 (async ({chrome, netscape}) => {
 
   // add Safari polyfill if needed

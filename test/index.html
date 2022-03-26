@@ -19,7 +19,7 @@
       const {default: HighlightedCode} = await import(
         /^(?:localhost|[::1]|127(?:.d+){3})$/.test(location.hostname) ?
         '../min.js' :
-        'https://unpkg.com/highlighted-code?module'
+        'https://unpkg.com/highlighted-code'
       );
 
       // https://github.com/highlightjs/highlight.js/tree/main/src/styles
@@ -28,12 +28,13 @@
   </script>
 </head>
 <body>
-<textarea is="highlighted-code" cols="60" rows="5" language="sql">
+<textarea is="highlighted-code" cols="48" rows="5" language="sql">
 CREATE TABLE "topic" (
   "id" integer NOT NULL PRIMARY KEY,
   "forum_id" integer NOT NULL,
   "subject" varchar(255) NOT NULL
 );
+
 ALTER TABLE "topic"
 ADD CONSTRAINT forum_id FOREIGN KEY ("forum_id")
 REFERENCES "forum" ("id");

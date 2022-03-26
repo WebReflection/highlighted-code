@@ -6,6 +6,7 @@ A textarea builtin extend to automatically provide code highlights based on one 
 
 ```html
 <!doctype html>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <style>
 textarea[is="highlighted-code"] { padding: 8px; }
 </style>
