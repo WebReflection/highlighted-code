@@ -51,7 +51,7 @@ The only extras attributes this component offer are:
 
   * **language**, reflected as `area.language` to define which kind of language should be highlighted. See the [list of supported languages here](https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md) (see those that don't require extra packages).
   * **tab-size**, reflected as `area.tabSize`, to determine the amount of virtual spaces covered by tabs. Because we live in a Mobile world, the default is `2`.
-  * **auto-height**, reflected as `area.autoHeight`, to render the textarea as if it was a regular element. Please note this does not work at runtime (yet), it's more like a presentation layer to virtually replace code blocks and graceful enhance highlights. See this attribute like a good companion of `disabled` to just show content. See the [test page](https://webreflection.github.io/highlighted-code/test/) as example.
+  * **auto-height**, reflected as `area.autoHeight`, to render the textarea as if it was a regular element. See the [test page](https://webreflection.github.io/highlighted-code/test/) as example, or set `autoHeight = true` in the live demo and see the area growing while typing.
 
 The exported `HighlightedCode` default class exposes these public methods/accessors:
 

@@ -113,17 +113,25 @@ class HighlightedCode extends HTMLTextAreaElement {
     this.setAttribute('tab-size', value);
   }
 
+  /**
+   * Set code to highlight.
+   * @type {string}
+   */
+  get value() {
+    return super.value;
+  }
+  set value(code) {
+    super.value = code;
+    this.oninput();
+  }
+
   attributeChangedCallback(name, _, value) {
     switch (name) {
       case 'auto-height':
         this.style.height = null;
         if (value != null) {
           this.value = this.value.trimEnd();
-          const {boxSizing, borderTop, borderBottom, paddingTop, paddingBottom} = getComputedStyle(this);
-          const paddingDiff = (parseFloat(paddingTop) || 0) + (parseFloat(paddingBottom) || 0);
-          const borderDiff = (parseFloat(borderTop) || 0) + (parseFloat(borderBottom) || 0);
-          const diff = boxSizing === 'border-box' ? -borderDiff : paddingDiff;
-          this.style.height = `${this.scrollHeight - diff}px`;
+          _autoHeight.call(this);
         }
         break;
       case 'disabled':
@@ -171,11 +179,10 @@ class HighlightedCode extends HTMLTextAreaElement {
   }
   oninput() {
     dropIdle(this.idle);
-    this.idle = setIdle(
+    const idle = (this.idle = setIdle(
       () => {
-        const pre = targets.get(this);
-        const code = pre.querySelector('code');
         const {language, value} = this;
+        const code = targets.get(this).querySelector('code');
 
         // Please note no language is very slow!
         if (!language)
@@ -187,9 +194,11 @@ class HighlightedCode extends HTMLTextAreaElement {
             hljs.highlightAuto(value)
         ).value + '<br>';
         this.onscroll();
+        if (idle === this.idle && this.autoHeight)
+          _autoHeight.call(this);
       },
       options
-    );
+    ));
   }
   onscroll() {
     const {scrollTop, scrollLeft} = this;
@@ -235,6 +244,14 @@ if (!customElements.get(TAG)) {
 
 /** @type {HighlightedCode} */
 export default customElements.get(TAG);
+
+function _autoHeight() {
+  const {boxSizing, borderTop, borderBottom, paddingTop, paddingBottom} = getComputedStyle(this);
+  const paddingDiff = (parseFloat(paddingTop) || 0) + (parseFloat(paddingBottom) || 0);
+  const borderDiff = (parseFloat(borderTop) || 0) + (parseFloat(borderBottom) || 0);
+  const diff = boxSizing === 'border-box' ? -borderDiff : paddingDiff;
+  this.style.height = `${this.scrollHeight - diff}px`;
+}
 
 function _backgroundColor() {
   const code = targets.get(this).querySelector('code');
