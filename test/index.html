@@ -5,10 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>highlighted-code</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     textarea[is="highlighted-code"] {
       padding: 16px;
       border: 1px solid silver;
       border-radius: 8px;
+      width: 100%;
+    }
+    textarea[is="highlighted-code"]:disabled {
+      -webkit-text-fill-color: currentcolor;
+      opacity: 1;
     }
   </style>
   <script type="module">
@@ -16,11 +24,7 @@
       if (!chrome && !netscape)
         await import('https://unpkg.com/@ungap/custom-elements');
 
-      const {default: HighlightedCode} = await import(
-        /^(?:localhost|[::1]|127(?:.d+){3})$/.test(location.hostname) ?
-        '../index.js' :
-        'https://unpkg.com/highlighted-code'
-      );
+      const {default: HighlightedCode} = await import('../index.js');
 
       // https://github.com/highlightjs/highlight.js/tree/main/src/styles
       HighlightedCode.useTheme('github-dark');
@@ -30,7 +34,7 @@
 <body>
 <textarea
   is="highlighted-code"
-  cols="48" rows="5" spellcheck="false"
+  spellcheck="false" cols="50"
   language="sql" tab-size="4" auto-height disabled>
 CREATE TABLE "topic" (
   "id" integer NOT NULL PRIMARY KEY,

@@ -119,8 +119,10 @@ class HighlightedCode extends HTMLTextAreaElement {
         this.style.height = null;
         if (value != null) {
           this.value = this.value.trimEnd();
-          const {paddingTop, paddingBottom} = getComputedStyle(this);
-          const diff = (parseFloat(paddingTop) || 0) + (parseFloat(paddingBottom) || 0);
+          const {boxSizing, borderTop, borderBottom, paddingTop, paddingBottom} = getComputedStyle(this);
+          const paddingDiff = (parseFloat(paddingTop) || 0) + (parseFloat(paddingBottom) || 0);
+          const borderDiff = (parseFloat(borderTop) || 0) + (parseFloat(borderBottom) || 0);
+          const diff = boxSizing === 'border-box' ? -borderDiff : paddingDiff;
           this.style.height = `${this.scrollHeight - diff}px`;
         }
         break;
@@ -219,7 +221,7 @@ if (!customElements.get(TAG)) {
         padding: ${padding};
         border: ${border};
         margin: 0;
-        background: none;
+        background: initial;
         border-color: transparent;
       `;
     }
