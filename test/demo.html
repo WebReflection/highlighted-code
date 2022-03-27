@@ -1,10 +1,19 @@
 <!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <style>
-textarea[is="highlighted-code"] {
-  width: 90%;
-  padding: 8px;
-}
+  * {
+    box-sizing: border-box;
+  }
+  textarea[is="highlighted-code"] {
+    padding: 8px;
+    border: 1px solid silver;
+    border-radius: 8px;
+    width: 100%;
+  }
+  textarea[is="highlighted-code"]:disabled {
+    -webkit-text-fill-color: currentcolor;
+    opacity: 1;
+  }
 </style>
 <script type="module">
 (async ({chrome, netscape}) => {
@@ -13,14 +22,14 @@ textarea[is="highlighted-code"] {
   if (!chrome && !netscape)
     await import('https://unpkg.com/@ungap/custom-elements');
 
-  const {default: HighlightedCode} = await import('https://unpkg.com/highlighted-code');
+  const {default: HighlightedCode} = await import('../min.js');
 
   // bootstrap a theme through one of these names
   // https://github.com/highlightjs/highlight.js/tree/main/src/styles
   HighlightedCode.useTheme('github-dark');
 })(self);
 </script>
-<textarea is="highlighted-code" rows="12" language="javascript" tab-size="2" spellcheck="false">
+<textarea is="highlighted-code" rows="6" language="javascript" tab-size="2" spellcheck="false">
 (async ({chrome, netscape}) => {
 
   // add Safari polyfill if needed
@@ -34,3 +43,5 @@ textarea[is="highlighted-code"] {
   HighlightedCode.useTheme('github-dark');
 })(self);
 </textarea>
+<hr>
+<div>Try <a href="./">auto-height &amp; disabled</a></div>
