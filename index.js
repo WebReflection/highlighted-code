@@ -57253,6 +57253,7 @@ const options = {timeout: 300, box: 'border-box'};
 const noIdle = typeof cancelIdleCallback !== 'function';
 const setIdle = noIdle ? setTimeout : requestIdleCallback;
 const dropIdle = noIdle ? clearTimeout : cancelIdleCallback;
+const FF = typeof netscape === 'object';
 
 let theme, resizeObserver;
 
@@ -57265,7 +57266,7 @@ let theme, resizeObserver;
 class HighlightedCode extends HTMLTextAreaElement {
   static get library() { return HighlightJS; }
   static get observedAttributes() {
-    return ['auto-height', 'language', 'tab-size'];
+    return ['auto-height', 'disabled', 'language', 'tab-size'];
   }
 
   /**
@@ -57367,6 +57368,10 @@ class HighlightedCode extends HTMLTextAreaElement {
           this.style.height = `${this.scrollHeight - diff}px`;
         }
         break;
+      case 'disabled':
+        if (FF)
+          targets.get(this).style.pointerEvents = this.disabled ? 'all' : 'none';
+        break;
       case 'language':
         let className = 'hljs';
         if (value)
@@ -57434,7 +57439,7 @@ class HighlightedCode extends HTMLTextAreaElement {
     pre.scrollTop = scrollTop;
     pre.scrollLeft = scrollLeft;
     // a very Firefox specific issue
-    if ('scrollLeftMax' in pre)
+    if (FF && 'scrollLeftMax' in pre)
       this.scrollLeft = Math.min(scrollLeft, pre.scrollLeftMax);
   }
 }
@@ -57447,9 +57452,9 @@ if (!customElements.get(TAG)) {
       const {top, left, width, height} = target.getBoundingClientRect();
       pre.style.cssText = `
         position: absolute;
-        pointer-events: none;
         overflow: auto;
         box-sizing: border-box;
+        pointer-events: ${(FF && target.disabled) ? 'all' : 'none'};
         tab-size: ${target.tabSize || 2};
         top: ${top}px;
         left: ${left}px;
