@@ -21,8 +21,10 @@ let theme, resizeObserver;
  * @example `<textarea is="highlighted-code" language="css"></textarea>`
  */
 class HighlightedCode extends HTMLTextAreaElement {
-  static get observedAttributes() { return ['language', 'tab-size']; }
   static get library() { return hljs; }
+  static get observedAttributes() {
+    return ['auto-height', 'language', 'tab-size'];
+  }
 
   /**
    * Automatically set a CSS theme for the highlighted code.
@@ -59,7 +61,11 @@ class HighlightedCode extends HTMLTextAreaElement {
       background-color: transparent;
     `;
     // setup internal class
-    const {language, tabSize} = this;
+    const {autoHeight, language, tabSize} = this;
+    if (autoHeight) {
+      delete this.autoHeight;
+      this.autoHeight = autoHeight;
+    }
     if (language) {
       delete this.language;
       this.language = language;
@@ -68,6 +74,20 @@ class HighlightedCode extends HTMLTextAreaElement {
       delete this.tabSize;
       this.tabSize = tabSize;
     }
+  }
+
+  /**
+   * Avoid vertical scrollbar.
+   * @type {boolean}
+   */
+   get autoHeight() {
+    return this.hasAttribute('auto-height');
+  }
+  set autoHeight(value) {
+    if (value)
+      this.setAttribute('auto-height', '');
+    else
+      this.removeAttribute('auto-height');
   }
 
   /**
@@ -94,6 +114,15 @@ class HighlightedCode extends HTMLTextAreaElement {
 
   attributeChangedCallback(name, _, value) {
     switch (name) {
+      case 'auto-height':
+        this.style.height = null;
+        if (value != null) {
+          this.value = this.value.trimEnd();
+          const {paddingTop, paddingBottom} = getComputedStyle(this);
+          const diff = (parseFloat(paddingTop) || 0) + (parseFloat(paddingBottom) || 0);
+          this.style.height = `${this.scrollHeight - diff}px`;
+        }
+        break;
       case 'language':
         let className = 'hljs';
         if (value)

@@ -6,7 +6,7 @@
   <title>highlighted-code</title>
   <style>
     textarea[is="highlighted-code"] {
-      padding: 8px;
+      padding: 16px;
       border: 1px solid silver;
       border-radius: 8px;
     }
@@ -28,7 +28,10 @@
   </script>
 </head>
 <body>
-<textarea is="highlighted-code" cols="48" rows="5" language="sql" tab-size="4" spellcheck="false">
+<textarea
+  is="highlighted-code"
+  cols="48" rows="5" spellcheck="false"
+  language="sql" tab-size="4" auto-height disabled>
 CREATE TABLE "topic" (
   "id" integer NOT NULL PRIMARY KEY,
   "forum_id" integer NOT NULL,
@@ -41,7 +44,6 @@ REFERENCES "forum" ("id");
 
 -- Initials
 insert into "topic" ("forum_id", "subject")
-values (2, 'D''artagnian');
-</textarea>
+values (2, 'D''artagnian');</textarea>
 </body>
 </html>

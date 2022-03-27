@@ -27,7 +27,7 @@ textarea[is="highlighted-code"] { padding: 8px; }
 </script>
 <textarea is="highlighted-code"
           cols="80" rows="12"
-          language="javascript" tab-size="2">
+          language="javascript" tab-size="2" auto-height>
 (async ({chrome, netscape}) => {
 
   // add Safari polyfill if needed
@@ -43,6 +43,20 @@ textarea[is="highlighted-code"] { padding: 8px; }
 </textarea>
 ```
 
+## API
+
+The component is literally a [textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) so everything that works or applies for this kind of element works and applies for this custom element too.
+
+The only extras attributes this component offer are:
+
+  * **language**, reflected as `area.language` to define which kind of language should be highlighted. See the [list of supported languages here](https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md) (see those that don't require extra packages).
+  * **tab-size**, reflected as `area.tabSize`, to determine the amount of virtual spaces covered by tabs. Because we live in a Mobile world, the default is `2`.
+  * **auto-height**, reflected as `area.autoHeight`, to render the textarea as if it was a regular element. Please note this does not work at runtime (yet), it's more like a presentation layer to virtually replace code blocks and graceful enhance highlights. See this attribute like a good companion of `disabled` to just show content. See the [test page](https://webreflection.github.io/highlighted-code/test/) as example.
+
+The exported `HighlightedCode` default class exposes these public methods/accessors:
+
+  * `HighlightedCode.useTheme(name:string)` to bootstrap [any valid CSS theme](https://github.com/highlightjs/highlight.js/tree/main/src/styles) by name. This can also be a fully qualified URL to avoid CDN when desired.
+  * `HighlightedCode.library:hljs` a getter to retrieve the imported [hljs library](https://highlightjs.org/), usable to register missing PLs or do something else.
 
 ## F.A.Q.
 
