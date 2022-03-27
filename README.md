@@ -125,7 +125,7 @@ textarea[is="highlighted-code"]::before {
   <summary><strong>How to ...?</strong></summary>
   <div>
 
-Look, this is a custom element builtin extend.
+Look, this is [a custom element builtin extend](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-customized-builtin-example).
 
 If you know how and when to use a textarea, you're 90% done with this module.
 
