@@ -4,10 +4,12 @@
   "description": "A textarea builtin extend to automatically provide code highlights based on one of the languages available via highlight.js",
   "main": "./cjs/index.js",
   "scripts": {
-    "build": "npm run cjs && npm run rollup:es && npm run rollup:index",
+    "build": "npm run cjs && npm run rollup:es && npm run rollup:index && npm run rollup:sql && npm run rollup:web",
     "cjs": "ascjs --no-default esm cjs",
     "rollup:es": "rollup --config rollup/es.config.js",
-    "rollup:index": "rollup --config rollup/index.config.js"
+    "rollup:index": "rollup --config rollup/index.config.js",
+    "rollup:sql": "rollup --config rollup/sql.config.js",
+    "rollup:web": "rollup --config rollup/web.config.js"
   },
   "keywords": [
     "textarea",
@@ -20,6 +22,7 @@
     "@rollup/plugin-node-resolve": "^13.1.3",
     "ascjs": "^5.0.1",
     "rollup": "^2.70.1",
+    "rollup-plugin-includepaths": "^0.2.4",
     "rollup-plugin-terser": "^7.0.2"
   },
   "module": "./esm/index.js",
@@ -28,6 +31,12 @@
     ".": {
       "import": "./esm/index.js",
       "default": "./cjs/index.js"
+    },
+    "./sql": {
+      "import": "./sql.js"
+    },
+    "./web": {
+      "import": "./web.js"
     },
     "./package.json": "./package.json"
   },

@@ -59,6 +59,16 @@ The exported `HighlightedCode` default class exposes these public methods/access
   * `HighlightedCode.insertText(text:string)` to programmatically insert some text where the selection is.
   * `HighlightedCode.library:hljs` a getter to retrieve the imported [hljs library](https://highlightjs.org/), usable to register missing PLs or do something else.
 
+
+## Exports
+
+The main export uses all default languages included in *highlight.js*, but there are other variants:
+
+  * `highlighted-code/web`, which includes only JS, TS, JSON, CSS, and HTML or XML
+  * `highlighted-code/sql`, which includes only SQL
+
+These variants are much lighter than default module.
+
 ## F.A.Q.
 
 <details>
