@@ -64,7 +64,7 @@ The exported `HighlightedCode` default class exposes these public methods/access
 
 The main export uses all default languages included in *highlight.js*, but there are other variants:
 
-  * `highlighted-code/web`, which includes only JS, TS, JSON, CSS, and HTML or XML
+  * `highlighted-code/web`, which includes only Markdown, JS, TS, JSON, CSS, and HTML or XML
   * `highlighted-code/sql`, which includes only SQL
 
 These variants are much lighter than default module.
