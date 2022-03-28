@@ -57270,6 +57270,30 @@ class HighlightedCode extends HTMLTextAreaElement {
   }
 
   /**
+   * Inserts some text where the selection is.
+   * @param {string} text any text to insert.
+   */
+  static insertText(text) {
+    const {activeElement} = document;
+    try {
+      // they say it's deprecated, but it's the only one that works and
+      // guarantees ctrl+z behavior ... no idea why anyone would remove this!
+      if (!(
+        text ?
+          document.execCommand('insertText', false, text) :
+          document.execCommand('delete')
+      ))
+        throw event;
+    }
+    catch(o_O) {
+      const {selectionStart} = activeElement;
+      activeElement.setRangeText(text);
+      activeElement.selectionStart = activeElement.selectionEnd = selectionStart + text.length;
+    }
+    activeElement.oninput();
+  }
+
+  /**
    * Automatically set a CSS theme for the highlighted code.
    * @param {string} name One of the themes from highlight.js or a css file to
    * point at. Names are like `default`, `github`, `tokio-night-dark` and so on
@@ -57412,18 +57436,7 @@ class HighlightedCode extends HTMLTextAreaElement {
   handleEvent(event) { this['on' + event.type](event); }
   onkeydown(event) {
     if (event.key === 'Tab') {
-      try {
-        // they say it's deprecated, but it's the only one that works and
-        // guarantees ctrl+z behavior ... no idea why anyone would remove this!
-        if (!document.execCommand('insertText', false, '\t'))
-          throw event;
-      }
-      catch(o_O) {
-        const {selectionStart} = this;
-        this.setRangeText('\t');
-        this.selectionStart = this.selectionEnd = selectionStart + 1;
-      }
-      this.oninput();
+      HighlightedCode.insertText('\t');
       event.preventDefault();
     }
   }

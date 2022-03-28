@@ -56,6 +56,7 @@ The only extras attributes this component offer are:
 The exported `HighlightedCode` default class exposes these public methods/accessors:
 
   * `HighlightedCode.useTheme(name:string)` to bootstrap [any valid CSS theme](https://github.com/highlightjs/highlight.js/tree/main/src/styles) by name. This can also be a fully qualified URL to avoid CDN when desired.
+  * `HighlightedCode.insertText(text:string)` to programmatically insert some text where the selection is.
   * `HighlightedCode.library:hljs` a getter to retrieve the imported [hljs library](https://highlightjs.org/), usable to register missing PLs or do something else.
 
 ## F.A.Q.
