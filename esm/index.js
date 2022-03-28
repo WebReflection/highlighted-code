@@ -170,9 +170,17 @@ class HighlightedCode extends HTMLTextAreaElement {
   handleEvent(event) { this['on' + event.type](event); }
   onkeydown(event) {
     if (event.key === 'Tab') {
-      const {selectionStart, selectionEnd, value} = this;
-      this.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
-      this.selectionStart = this.selectionEnd = selectionStart + 1;
+      try {
+        // they say it's deprecated, but it's the only one that works and
+        // guarantees ctrl+z behavior ... no idea why anyone would remove this!
+        if (!document.execCommand('insertText', false, '\t'))
+          throw event;
+      }
+      catch(o_O) {
+        const {selectionStart} = this;
+        this.setRangeText('\t');
+        this.selectionStart = this.selectionEnd = selectionStart + 1;
+      }
       this.oninput();
       event.preventDefault();
     }
