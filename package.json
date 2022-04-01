@@ -1,6 +1,6 @@
 {
   "name": "highlighted-code",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A textarea builtin extend to automatically provide code highlights based on one of the languages available via highlight.js",
   "main": "./cjs/index.js",
   "scripts": {
