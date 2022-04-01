@@ -57509,6 +57509,7 @@ if (!customElements.get(TAG)) {
 var index = customElements.get(TAG);
 
 function _autoHeight() {
+  this.style.height = 'auto';
   const {boxSizing, borderTop, borderBottom, paddingTop, paddingBottom} = getComputedStyle(this);
   const paddingDiff = (parseFloat(paddingTop) || 0) + (parseFloat(paddingBottom) || 0);
   const borderDiff = (parseFloat(borderTop) || 0) + (parseFloat(borderBottom) || 0);
