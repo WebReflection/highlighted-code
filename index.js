@@ -57351,10 +57351,14 @@ class HighlightedCode extends HTMLTextAreaElement {
     return this.hasAttribute('auto-height');
   }
   set autoHeight(value) {
-    if (value)
+    if (value) {
+      this.style.resize = 'none';
       this.setAttribute('auto-height', '');
-    else
+    }
+    else {
+      this.style.resize = null;
       this.removeAttribute('auto-height');
+    }
   }
 
   /**
