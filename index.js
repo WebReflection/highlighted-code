@@ -57347,7 +57347,7 @@ class HighlightedCode extends HTMLTextAreaElement {
    * Avoid vertical scrollbar.
    * @type {boolean}
    */
-   get autoHeight() {
+  get autoHeight() {
     return this.hasAttribute('auto-height');
   }
   set autoHeight(value) {
@@ -57490,8 +57490,8 @@ if (!customElements.get(TAG)) {
         box-sizing: border-box;
         pointer-events: ${(FF && target.disabled) ? 'all' : 'none'};
         tab-size: ${target.tabSize || 2};
-        top: ${top}px;
-        left: ${left}px;
+        top: ${top + scrollY}px;
+        left: ${left + scrollX}px;
         width: ${width}px;
         height: ${height}px;
         font: ${font};
