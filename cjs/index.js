@@ -6,6 +6,7 @@ const hljs = (m => /* c8 ignore start */ m.__esModule ? m.default : m /* c8 igno
 const TAG = 'highlighted-code';
 
 const targets = new WeakMap;
+const components = new Set;
 
 const options = {timeout: 300, box: 'border-box'};
 
@@ -180,6 +181,7 @@ class HighlightedCode extends HTMLTextAreaElement {
     }
   }
   connectedCallback() {
+    components.add(this);
     this.parentElement.insertBefore(targets.get(this), this.nextSibling);
     this.oninput();
     _backgroundColor.call(this);
@@ -189,6 +191,7 @@ class HighlightedCode extends HTMLTextAreaElement {
     this.addEventListener('input', this);
   }
   disconnectedCallback() {
+    components.delete(this);
     targets.get(this).remove();
     resizeObserver.unobserve(this);
     this.removeEventListener('keydown', this);
@@ -238,7 +241,7 @@ class HighlightedCode extends HTMLTextAreaElement {
 }
 
 if (!customElements.get(TAG)) {
-  resizeObserver = new ResizeObserver(entries => {
+  const onResize = entries => {
     for (const {target} of entries) {
       const pre = targets.get(target);
       const {border, font, letterSpacing, lineHeight, padding, wordSpacing} = getComputedStyle(target);
@@ -264,7 +267,14 @@ if (!customElements.get(TAG)) {
         border-color: transparent;
       `;
     }
+  };
+  addEventListener('resize', () => {
+    const entries = [];
+    for (const target of components)
+      entries.push({target});
+    onResize(entries);
   });
+  resizeObserver = new ResizeObserver(onResize);
   customElements.define(TAG, HighlightedCode, {extends: 'textarea'});
 }
 

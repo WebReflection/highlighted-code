@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>highlighted-code</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    body > * {
+      margin: auto;
+      max-width: 600px;
+    }
+    div {
+      font-family: sans-serif;
+      font-weight: 600;
+    }
+    textarea[is="highlighted-code"] {
+      padding: 16px;
+      border: 1px solid silver;
+      border-radius: 8px;
+      width: 100%;
+    }
+    textarea[is="highlighted-code"]:disabled {
+      -webkit-text-fill-color: currentcolor;
+      opacity: 1;
+    }
+  </style>
+  <script type="module">
+    (async ({chrome, netscape}) => {
+      if (!chrome && !netscape)
+        await import('https://unpkg.com/@ungap/custom-elements');
+
+      const {default: HighlightedCode} = await import('../sql.js');
+
+      // https://github.com/highlightjs/highlight.js/tree/main/src/styles
+      HighlightedCode.useTheme('github-dark');
+    })(self);
+  </script>
+</head>
+<body>
+<div>auto-height & disabled</div>
+<textarea
+  is="highlighted-code"
+  spellcheck="false" cols="50"
+  language="sql" tab-size="4" auto-height disabled>
+CREATE TABLE "topic" (
+  "id" integer NOT NULL PRIMARY KEY,
+  "forum_id" integer NOT NULL,
+  "subject" varchar(255) NOT NULL
+);
+
+ALTER TABLE "topic"
+ADD CONSTRAINT forum_id FOREIGN KEY ("forum_id")
+REFERENCES "forum" ("id");
+
+-- Initials
+insert into "topic" ("forum_id", "subject")
+values (2, 'D''artagnian');</textarea>
+<hr>
+<div>disabled</div>
+<textarea
+  is="highlighted-code"
+  spellcheck="false" cols="50" rows="6"
+  language="sql" tab-size="4" disabled>
+CREATE TABLE "topic" (
+  "id" integer NOT NULL PRIMARY KEY,
+  "forum_id" integer NOT NULL,
+  "subject" varchar(255) NOT NULL
+);
+
+ALTER TABLE "topic"
+ADD CONSTRAINT forum_id FOREIGN KEY ("forum_id")
+REFERENCES "forum" ("id");
+
+-- Initials
+insert into "topic" ("forum_id", "subject")
+values (2, 'D''artagnian');</textarea>
+<hr>
+<div>auto-height</div>
+<textarea
+  is="highlighted-code"
+  spellcheck="false" cols="50" max-rows="15"
+  language="sql" tab-size="4" auto-height>
+CREATE TABLE "topic" (
+  "id" integer NOT NULL PRIMARY KEY,
+  "forum_id" integer NOT NULL,
+  "subject" varchar(255) NOT NULL
+);
+
+ALTER TABLE "topic"
+ADD CONSTRAINT forum_id FOREIGN KEY ("forum_id")
+REFERENCES "forum" ("id");
+
+-- Initials
+insert into "topic" ("forum_id", "subject")
+values (2, 'D''artagnian');</textarea>
+</body>
+</html>
